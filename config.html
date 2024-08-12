@@ -1,6 +1,9 @@
 <head>
   <title>OpenAsar Config</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Code-Nit-Whit/openAsar_cdn/styles.css">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/Code-Nit-Whit/openAsar_cdn/styles.css"
+  />
 </head>
 <!-- <h2><img src="https://twitter.github.io/twemoji/v/14.0.0/svg/1f44b.svg"> Welcome to OpenAsar, you can configure its features here</h2> -->
 
@@ -8,6 +11,7 @@
   <h1>OpenAsar Config</h1>
   <div id="t_settings" class="active">Settings</div>
   <div id="t_theming">Theming</div>
+  <div id="t_userscripts">Userscripts</div>
 </header>
 
 <div id="container"></div>
@@ -27,57 +31,94 @@
   };
 
   const experimental = (arr) => {
-    arr[0] = `<svg width="22" height="22" viewBox="0 0 16 16"><path style="fill: currentColor" fill-rule="evenodd" d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458L5 5.782zM9.5 2.5h-3V6a.75.75 0 0 1-.117.403L4.73 9h6.54L9.617 6.403A.75.75 0 0 1 9.5 6V2.5zm-6.9 9.847L3.775 10.5h8.45l1.175 1.847a.75.75 0 0 1-.633 1.153H3.233a.75.75 0 0 1-.633-1.153z"/></svg> ` + arr[0];
+    arr[0] =
+      `<svg width="22" height="22" viewBox="0 0 16 16"><path style="fill: currentColor" fill-rule="evenodd" d="M5 5.782V2.5h-.25a.75.75 0 0 1 0-1.5h6.5a.75.75 0 0 1 0 1.5H11v3.282l3.666 5.76C15.619 13.04 14.543 15 12.767 15H3.233c-1.776 0-2.852-1.96-1.899-3.458L5 5.782zM9.5 2.5h-3V6a.75.75 0 0 1-.117.403L4.73 9h6.54L9.617 6.403A.75.75 0 0 1 9.5 6V2.5zm-6.9 9.847L3.775 10.5h8.45l1.175 1.847a.75.75 0 0 1-.633 1.153H3.233a.75.75 0 0 1-.633-1.153z"/></svg> ` +
+      arr[0];
     arr[1] = `<b>Experimental:</b> ` + arr[1];
 
     return arr;
   };
 
   const config = Native.get();
+
   // const config = {};
+
   const mainSettings = [
-    [ 'Focus', 'Which aspect of the client to focus on', 'cmdPreset', [ 'performance', 'battery life', 'balanced' ], () => config.cmdPreset ],
-    [ 'No Track', 'Disables Discord\'s added tracking / analytics / telemetry (Sentry, science)', 'noTrack', true ],
-    [ 'Disable Typing', 'Disables showing other people that you are typing', 'noTyping', false ],
-    [ 'Splash Theming', 'Uses your client mod\'s theme for the splash screen', 'themeSync', true ],
-    experimental([ 'Quickstart', 'Makes Discord start faster by skipping some steps like waiting for update checks on start', 'quickstart', false ]),
-    experimental([ 'Multi Instance', 'Allows Discord to have multiple instances / windows open at once', 'multiInstance', false ]),
+    [
+      "Focus",
+      "Which aspect of the client to focus on",
+      "cmdPreset",
+      ["performance", "battery life", "balanced"],
+      () => config.cmdPreset,
+    ],
+    [
+      "No Track",
+      "Disables Discord's added tracking / analytics / telemetry (Sentry, science)",
+      "noTrack",
+      true,
+    ],
+    [
+      "Disable Typing",
+      "Disables showing other people that you are typing",
+      "noTyping",
+      false,
+    ],
+    [
+      "Splash Theming",
+      "Uses your client mod's theme for the splash screen",
+      "themeSync",
+      true,
+    ],
+    experimental([
+      "Quickstart",
+      "Makes Discord start faster by skipping some steps like waiting for update checks on start",
+      "quickstart",
+      false,
+    ]),
+    experimental([
+      "Multi Instance",
+      "Allows Discord to have multiple instances / windows open at once",
+      "multiInstance",
+      false,
+    ]),
   ];
 
   const makeSwitch = (listener, initial = false, disabled = false) => {
-    const switchEl = document.createElement('label');
-    switchEl.className = 'switch' + (disabled ? ' disabled' : '');
-    if (initial) switchEl.classList.add('on');
+    const switchEl = document.createElement("label");
+    switchEl.className = "switch" + (disabled ? " disabled" : "");
+    if (initial) switchEl.classList.add("on");
 
-    const switchInputChildEl = document.createElement('input');
-    switchInputChildEl.type = 'checkbox';
+    const switchInputChildEl = document.createElement("input");
+    switchInputChildEl.type = "checkbox";
     switchInputChildEl.checked = initial;
     switchInputChildEl.disabled = disabled;
 
-    switchInputChildEl.onchange = disabled ? () => {} : () => {
-      const value = switchInputChildEl.checked;
+    switchInputChildEl.onchange = disabled
+      ? () => {}
+      : () => {
+          const value = switchInputChildEl.checked;
 
-      setTimeout(() => {
-        if (value) switchEl.classList.add('on');
-        else switchEl.classList.remove('on');
-      }, 160);
+          setTimeout(() => {
+            if (value) switchEl.classList.add("on");
+            else switchEl.classList.remove("on");
+          }, 160);
 
-      listener(value);
-    };
+          listener(value);
+        };
 
     switchEl.appendChild(switchInputChildEl);
 
-    const switchDivChildEl = document.createElement('div');
+    const switchDivChildEl = document.createElement("div");
     switchEl.appendChild(switchDivChildEl);
 
     return switchEl;
   };
 
   const makeDropdown = (listener, opts, def) => {
-    const dropdownEl = document.createElement('select');
+    const dropdownEl = document.createElement("select");
 
     for (const opt of opts) {
-      const el = document.createElement('option');
+      const el = document.createElement("option");
       el.textContent = opt[0].toUpperCase() + opt.slice(1);
       el.value = opt;
 
@@ -93,31 +134,46 @@
     return dropdownEl;
   };
 
-  const makeItem = ([ name, desc, key, def, def2 ]) => {
-    if (typeof def === 'function') def = def();
-    if (typeof def2 === 'function') def2 = def2();
+  const makeItem = ([name, desc, key, def, def2]) => {
+    if (typeof def === "function") def = def();
+    if (typeof def2 === "function") def2 = def2();
 
-    const el = document.createElement('div');
+    const el = document.createElement("div");
 
-    const nameEl = document.createElement('div');
+    const nameEl = document.createElement("div");
     nameEl.innerHTML = name;
 
-    const descEl = document.createElement('div');
+    const descEl = document.createElement("div");
     descEl.innerHTML = desc;
 
     const lookup = {
-      'performance': 'perf',
-      'battery life': 'battery',
-      'balanced': 'balanced'
+      performance: "perf",
+      "battery life": "battery",
+      balanced: "balanced",
     };
 
-    const switchEl = typeof def === 'boolean' ? makeSwitch((v) => {
-      config[key] = v;
-      Native.set(config);
-    }, config[key] ?? def, def2 === true) : makeDropdown(typeof key === 'function' ? key : v => {
-      config[key] = lookup[v] ?? v;
-      Native.set(config);
-    }, def, key === 'cmdPreset' ? Object.keys(lookup)[Object.values(lookup).indexOf(def2)] : def2 );
+    const switchEl =
+      typeof def === "boolean"
+        ? makeSwitch(
+            (v) => {
+              config[key] = v;
+              Native.set(config);
+            },
+            config[key] ?? def,
+            def2 === true
+          )
+        : makeDropdown(
+            typeof key === "function"
+              ? key
+              : (v) => {
+                  config[key] = lookup[v] ?? v;
+                  Native.set(config);
+                },
+            def,
+            key === "cmdPreset"
+              ? Object.keys(lookup)[Object.values(lookup).indexOf(def2)]
+              : def2
+          );
 
     nameEl.append(switchEl);
     el.append(nameEl, descEl);
@@ -130,61 +186,111 @@
   b_restart.onclick = () => Native.restart();
   b_close.onclick = () => window.close();
 
-  const buildSettings = x => {
-    container.innerHTML = '';
+  const buildSettings = (x) => {
+    container.innerHTML = "";
     container.append(...x.map(makeItem));
   };
 
-  const loadScript = async x => {
-    const el = document.createElement('script');
+  const loadScript = async (x) => {
+    const el = document.createElement("script");
     el.src = x;
     document.head.append(el);
 
-    await new Promise(res => el.onload = res);
+    await new Promise((res) => (el.onload = res));
   };
 
   t_settings.onclick = () => {
-    document.querySelectorAll('[id^="t_"]').forEach(x => x.classList.remove('active'));
-    t_settings.classList.add('active');
+    document
+      .querySelectorAll('[id^="t_"]')
+      .forEach((x) => x.classList.remove("active"));
+    t_settings.classList.add("active");
 
     buildSettings(mainSettings);
   };
-  t_theming.onclick = async () => {
-    document.querySelectorAll('[id^="t_"]').forEach(x => x.classList.remove('active'));
-    t_theming.classList.add('active');
 
-    container.innerHTML = '';
+  t_theming.onclick = async () => {
+    document
+      .querySelectorAll('[id^="t_"]')
+      .forEach((x) => x.classList.remove("active"));
+    t_theming.classList.add("active");
+
+    container.innerHTML = "";
 
     if (!window.monaco) {
-      await loadScript('monaco-editor/min/vs/loader.js');
+      await loadScript("monaco-editor/min/vs/loader.js");
       // await new Promise(res => setTimeout(res, 500));
 
-      require.config({ paths: { vs: 'monaco-editor/min/vs' } });
-      await new Promise(res => require(['vs/editor/editor.main'], res));
+      require.config({ paths: { vs: "monaco-editor/min/vs" } });
+      await new Promise((res) => require(["vs/editor/editor.main"], res));
     }
 
-    if (!t_theming.classList.contains('active')) return;
+    if (!t_theming.classList.contains("active")) return;
 
-    const monacoContainer = document.createElement('div');
-    monacoContainer.style.width = '100%';
-    monacoContainer.style.height = '75vh';
+    const monacoContainer = document.createElement("div");
+    monacoContainer.style.width = "100%";
+    monacoContainer.style.height = "75vh";
     container.appendChild(monacoContainer);
 
     window.editor = monaco.editor.create(monacoContainer, {
-      value: config.css || `/* Add your own Custom CSS here.
+      value:
+        config.css ||
+        `/* Add your own Custom CSS here.
 Have a theme you want to use? Copy and paste the contents here.
 You need to restart (click the restart button) after changing. */`,
-      language: 'css',
-      theme: 'vs-dark',
+      language: "css",
+      theme: "vs-dark",
       minimap: {
-        enabled: false
-      }
+        enabled: true,
+      },
     });
 
     const save = debounce(() => Native.set(config), 500);
 
-    editor.getModel().onDidChangeContent(e => {
+    editor.getModel().onDidChangeContent((e) => {
       config.css = editor.getValue();
+      save();
+    });
+  };
+
+  t_userscripts.onclick = async () => {
+    document
+      .querySelectorAll('[id^="t_"]')
+      .forEach((x) => x.classList.remove("active"));
+    t_userscripts.classList.add("active");
+
+    container.innerHTML = "";
+
+    if (!window.monaco) {
+      await loadScript("monaco-editor/min/vs/loader.js");//////////////////////
+      // await new Promise(res => setTimeout(res, 500));
+
+      require.config({ paths: { vs: "monaco-editor/min/vs" } });
+      await new Promise((res) => require(["vs/editor/editor.main"], res));
+    }
+
+    if (!t_userscripts.classList.contains("active")) return;
+
+    const monacoContainer = document.createElement("div");
+    monacoContainer.style.width = "100%";
+    monacoContainer.style.height = "75vh";
+    container.appendChild(monacoContainer);
+
+    window.editor = monaco.editor.create(monacoContainer, {
+      value:
+        config.js ||
+        `/* Add or paste your userscript here.
+You need to restart (click the restart button) after changing. */`,
+      language: "javascript",
+      theme: "vs-dark",
+      minimap: {
+        enabled: true,
+      },
+    });
+
+    const save = debounce(() => Native.set(config), 500);
+
+    editor.getModel().onDidChangeContent((e) => {
+      config.js = editor.getValue();
       save();
     });
   };
